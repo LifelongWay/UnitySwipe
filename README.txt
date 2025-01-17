@@ -1,4 +1,4 @@
-#####	 Instructions for Creating a Vertical Scroll Panel   #####
+####   Instructions on using VerticalSwipe/HorizontalSwipe panel   ###
 
 1. Create a new GameObject.
 2. Attach the VerticalScroll script to the GameObject.

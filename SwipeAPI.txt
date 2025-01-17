@@ -1,5 +1,7 @@
 API Documentation
 
+(*for both scripts).
+
 Inspector var-s
 
 a. treshold - when swipe will automatically happen.
@@ -15,10 +17,16 @@ b. speedTreshold - when swipe average speed exceeds treshold, swipe happens, des
 
 c. changingTime - deltaTime for swipe, i.e affects how fast changing(swiping) element happens after finger removed.
 
+
+d*. isBounded - if we can swipe last item, so that panel vanishes.
+(only for horizontal swipe panel -- sometimes useful).
+
 Note: these variables should e adjusted by developer, in order to get desired behavior of panel.
 
 Methods
 
-1. addKit(GameOject item) -- adds gameoject to panel to bottom
-2. clean(void) -- destroys ojects in panel
-3. Cleaner(void) -- can be used, in case of too many elements to remove elements partially. (up to developer)
+1. addKit(GameOject item) -- adds gameoject to panel to bottom.
+2. clean(void) -- destroys ojects in panel.
+3. Cleaner(void) -- can be used, in case of too many elements to remove elements partially. (up to developer).
+
+4*. insert(GameObject object, int position) -- inserts gameojbect to specified position in panel. (--currently HorizontalPanel feature only--).
