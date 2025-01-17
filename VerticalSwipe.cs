@@ -1,4 +1,4 @@
-    using System;
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,7 +47,7 @@ public class SwipeY : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHa
     [NonSerialized]public List<GameObject> child = new List<GameObject>();
     public List<GameObject> buffer = new List<GameObject>();
     public event EventHandler OnKitChanged;
-    void Awake()
+    void Start()
     {
         // NOTE: swipePanel MUST BE INITIALIZED!
         currentObject = 1;
@@ -65,10 +65,17 @@ public class SwipeY : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHa
         ScreenHeight = Screen.height;
         // set scrolling parameters
         isActive = false;
+
+        // set pivot to (0.5,1)
+        this.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 1f);
+
+        // set position to top middle
+        this.transform.position = new Vector2(Screen.width/2, Screen.height);
+        
+        // set full-screen size
         RectTransform rect = this.GetComponent<RectTransform>();
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, Max_Items_Number * ScreenHeight);
-         
-        panelPosition = transform.position; // getting Y0 of panel
+        rect.sizeDelta = new Vector2(Screen.width, Max_Items_Number * ScreenHeight);
+        panelPosition = transform.position; // can be used later
         initialPosition = panelPosition;
     }
 
@@ -184,15 +191,20 @@ public class SwipeY : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHa
         ▐▌   ▐▌ ▐▌▐▌  ▐▌▐▌  ▐▌▐▌ ▐▌▐▌ ▝▜▌
         ▝▚▄▄▖▝▚▄▞▘▐▌  ▐▌▐▌  ▐▌▝▚▄▞▘▐▌  ▐▌
 */
-    public void addKit(GameObject kit)
+    public void addKit(GameObject item)
     {
-        if(kit == null)return;
+        if(item == null)return;
+        RectTransform rect = item.GetComponent<RectTransform>();
+        //set pivot
+        rect.pivot = new Vector2(0.5f, 1f);
+        // set full-screen
+        rect.sizeDelta = new Vector2(Screen.width,Screen.height);
         // set transform of new adding kit before it becomes child of panel        
-        kit.transform.position = new Vector2(Screen.width/2, (child.Count == 0)? (2778f/2778f*Screen.height) : (child[child.Count - 1].transform.position.y - Screen.height) );
+        item.transform.position = new Vector2(Screen.width/2, (child.Count == 0)? (Screen.height) : (child[child.Count - 1].transform.position.y - Screen.height) );
         // set object as child of swipable panel
-        kit.transform.SetParent(this.transform, true);
+        item.transform.SetParent(this.transform, true);
         // add it immediately to main list of child kits
-        child.Add(kit);
+        child.Add(item);
     }
 
 
@@ -213,8 +225,6 @@ public class SwipeY : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHa
         buffer.Clear();
         Debug.Log("DROPPED BUFFER");
     }
-
-
 
     public void clear()
     {
